@@ -1,4 +1,4 @@
-package com.example.lfmpbackend;
+package com.MinNiCup.lfmpbackend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class LfmpBackEndApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(LfmpBackEndApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(LfmpBackEndApplication.class, args);
+    }
 
 }
