@@ -12,24 +12,24 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SmsUtil {
 
-    private static final String SecretId = "AKIDqVyFJ9lAMK5e094uXyBC2f4GH6i8MNBl";
-    private static final String SecretKey = "UkncFfsseEahZEgtrfEZfV6UdWAYidKn";
+    private static final String SecretId = "";
+    private static final String SecretKey = "";
 
     /**
      * 短信 SdkAppId，在 [短信控制台](<a href="https://console.cloud.tencent.com/smsv2/app-manage">...</a>)  添加应用后生成的实际 SdkAppId，示例如1400006666。
      */
-    private static final String SmsSdkAppId = "1400735512";
+    private static final String SmsSdkAppId = "";
 
     /**
      * 模板 ID，必须填写已审核通过的模板 ID。模板 ID 可前往 [国内短信](<a href="<a">href="https://console.cloud.tencent.com/smsv2/csms</a>-template">...</a>) 或 [国际/港澳台短信](<a href="https://console.cloud.tencent.com/smsv2/isms-template">...</a>) 的正文模板管理查看，若向境外手机号发送短信，仅支持使用国际/港澳台短信模板。
      */
-    private static final String TemplateId = "1540553";
+    private static final String TemplateId = "";
 
     /**
      * 短信签名内容，使用 UTF-8 编码，必须填写已审核通过的签名，例如：腾讯云，签名信息可前往 [国内短信](<a href="https://console.cloud.tencent.com/smsv2/csms-sign">...</a>) 或 [国际/港澳台短信](<a href="https://console.cloud.tencent.com/smsv2/isms-sign">...</a>) 的签名管理查看。
      <dx-alert infotype="notice" title="注意">发送国内短信该参数必填。</dx-alert>
      */
-    private static final String SignName = "健康快乐学习每一天网";
+    private static final String SignName = "";
 
     /**
      * templateParamSet
