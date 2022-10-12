@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.MinNiCup.lfmpbackend.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.MinNiCup.lfmpbackend.pojo.domain.User">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <id column="account" jdbcType="VARCHAR" property="account"/>
+        <id column="password" jdbcType="VARCHAR" property="password"/>
+        <id column="is_ident" jdbcType="INTEGER" property="idIdent"/>
+    </resultMap>
+
+    <insert id="insertUser">
+        insert into user (account, password)
+        values (#{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR})
+    </insert>
+
+    <select id="selectByLogin" resultType="com.MinNiCup.lfmpbackend.pojo.po.UserPo">
+        select u.id as userId, ui.name as name, u.is_ident as isIdent
+        from user u
+        left join user_info ui on ui.user_id = u.id
+        where u.account = #{loginParam.account}
+            and u.password = #{loginParam.password}
+    </select>
+    <select id="selectAllByAccount" resultMap="BaseResultMap">
+        select *
+        from user
+        where account = #{account,jdbcType=VARCHAR}
+    </select>
+    <select id="selectLoginByAccount" resultType="com.MinNiCup.lfmpbackend.pojo.dto.result.LoginResult">
+        select account as account, name, is_ident as isIdent
+        from user, user_info
+        where account = #{account,jdbcType=VARCHAR}
+            and user.id = user_info.user_id
+    </select>
+
+</mapper>

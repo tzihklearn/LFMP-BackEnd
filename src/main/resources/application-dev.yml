@@ -1,0 +1,45 @@
+server:
+  port: 38086
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3300/lfmp?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+#    url: jdbc:mysql://43.142.146.75:3306/recall?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+#    username: recall
+#    password: 123456
+  redis:
+    host:
+    port:
+    password:
+    connect-timeout: 10000
+#    jedis:
+#      pool:
+#        # 连接池最大连接数，若为负数则表示没有任何限制
+#        max-active: 8
+#        # 连接池最大阻塞等待时间，若为负数则表示没有任何限制
+#        max-wait: -1
+#        # 连接池中的最大空闲连接
+#        max-idle: 8
+  servlet:
+    multipart:
+      enabled: true
+      # 设置 上传文件的大小
+      max-file-size: 10MB
+      # 设置 整个请求的大小
+      max-request-size: 15MB
+
+
+lark-robot:
+  dev: false
+  url: https://open.feishu.cn/open-apis/bot/v2/hook/3e2462d9-7539-470d-914e-8f1baeec87e9
+  profile: dev
+#feishu-robot:
+#  hook_url: https://open.feishu.cn/open-apis/bot/v2/hook/0ec2dc49-0af4-4aae-a9a2-829f13a93b4f
+#  enabled: true  # 是否开启通知, 用于不同环境下的区分(开发, 测试, 生产), 默认为 true
+#  profile: dev
+logging:
+  level:
+    com.com.MinNiCup.lfmpbackend.mapper: debug
