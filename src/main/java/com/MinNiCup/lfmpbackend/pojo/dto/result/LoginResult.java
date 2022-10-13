@@ -15,4 +15,6 @@ public class LoginResult {
 
     Integer isIdent;
 
+    String token;
+
 }
