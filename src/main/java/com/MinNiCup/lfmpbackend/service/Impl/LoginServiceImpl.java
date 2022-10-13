@@ -16,7 +16,6 @@ import com.MinNiCup.lfmpbackend.utils.JwtUtil;
 import com.MinNiCup.lfmpbackend.utils.MD5Util;
 import com.MinNiCup.lfmpbackend.utils.RandomUtil;
 import com.MinNiCup.lfmpbackend.utils.RedisUtils.RedisUtil;
-import com.MinNiCup.lfmpbackend.utils.SmsUtil;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
