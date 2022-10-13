@@ -2,13 +2,13 @@ package com.MinNiCup.lfmpbackend.controller;
 
 import com.MinNiCup.lfmpbackend.pojo.CommonResult;
 import com.MinNiCup.lfmpbackend.pojo.dto.param.ModifyNameParam;
+import com.MinNiCup.lfmpbackend.pojo.dto.result.FreeConsultResult;
+import com.MinNiCup.lfmpbackend.pojo.dto.result.LawyerResult;
 import com.MinNiCup.lfmpbackend.service.ConsumerService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author tzih
@@ -25,5 +25,12 @@ public class ConsumerController {
     public CommonResult<String> modifyName(@RequestBody ModifyNameParam modifyNameParam) {
         return consumerService.modifyName(modifyNameParam);
     }
+
+    @GetMapping("/free-consult")
+    public CommonResult<List<FreeConsultResult>> freeConsult() {
+        return consumerService.freeConsult();
+    }
+
+
 
 }

@@ -37,4 +37,6 @@ public class UserInfo {
 
     String intro;
 
+    Boolean isLawyer;
+
 }

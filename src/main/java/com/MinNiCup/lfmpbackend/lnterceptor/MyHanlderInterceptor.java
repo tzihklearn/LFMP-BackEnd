@@ -24,9 +24,6 @@ import java.io.IOException;
 @Slf4j
 public class MyHanlderInterceptor implements HandlerInterceptor {
 
-//    @Resource
-//    private HttpServletRequest myRequest;
-
     @Resource
     private RedisUtil redisUtil;
 

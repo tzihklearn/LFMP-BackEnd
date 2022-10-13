@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.MinNiCup.lfmpbackend.mapper.ConsultMapper">
+
+
+    <select id="selectFreeConsultByConsumer"
+            resultType="com.MinNiCup.lfmpbackend.pojo.dto.result.FreeConsultResult">
+        select ui.name as lawyerName, ui.phone as phone, c.data
+        from consult c
+        left join user_info ui on c.lawyer_id = ui.user_id
+        where c.consumer_id = #{consumerId,javaType=INTEGER}
+            and c.model = 1
+    </select>
+</mapper>
