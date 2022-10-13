@@ -1,7 +1,6 @@
 package com.MinNiCup.lfmpbackend.controller;
 
 import com.MinNiCup.lfmpbackend.pojo.CommonResult;
-import com.MinNiCup.lfmpbackend.pojo.domain.User;
 import com.MinNiCup.lfmpbackend.pojo.dto.param.LoginParam;
 import com.MinNiCup.lfmpbackend.pojo.dto.param.LoginTokenParam;
 import com.MinNiCup.lfmpbackend.pojo.dto.param.RegisterParam;
@@ -21,7 +20,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/login")
-public class loginController {
+public class LoginController {
 
     @Resource
     private LoginService loginService;

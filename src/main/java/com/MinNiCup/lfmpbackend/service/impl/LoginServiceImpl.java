@@ -18,17 +18,13 @@ import com.MinNiCup.lfmpbackend.utils.RandomUtil;
 import com.MinNiCup.lfmpbackend.utils.RedisUtils.RedisUtil;
 import com.MinNiCup.lfmpbackend.utils.SmsUtil;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -45,9 +41,6 @@ public class LoginServiceImpl implements LoginService {
 
     @Resource
     private HttpServletRequest request;
-
-    @Resource
-    private HttpServletResponse response;
 
     @Resource
     private RedisUtil redisUtil;
@@ -86,13 +79,14 @@ public class LoginServiceImpl implements LoginService {
         }
 
         //设置token
-        setToken(loginParam.getAccount());
+        String token = setToken(loginParam.getAccount());
 
         LoginResult loginResult = new LoginResult();
 
         loginResult.setAccount(loginParam.getAccount());
         loginResult.setName(userPo.getName());
         loginResult.setIsIdent(userPo.getIsIdent());
+        loginResult.setToken(token);
 
         return CommonResult.success(loginResult);
     }
@@ -130,9 +124,6 @@ public class LoginServiceImpl implements LoginService {
 
         System.out.println(verify);
         if (verifyParam.getVerification().equals(verify)) {
-
-            //设置token
-            setToken(verifyParam.getAccount());
 
             User user = userMapper.selectAllByAccount(verifyParam.getAccount());
 
@@ -210,7 +201,7 @@ public class LoginServiceImpl implements LoginService {
 //        return CommonResult.success(users.get(0));
     }
 
-    private void setToken(String account) {
+    private String setToken(String account) {
         log.info("生成token");
         Map<String, String> payload = new HashMap<>();
 
@@ -218,10 +209,13 @@ public class LoginServiceImpl implements LoginService {
 
 //            payload.put("phone", verifyParam.getPhone());
 
-        String token = JwtUtil.getToken(payload);
+        String token =  JwtUtil.getToken(payload);
 
-        log.info("将token放入返回头");
-        response.setHeader("Authorization", token);
+        redisUtil.remove(account);
+
+        redisUtil.set(account, token, 7 ,TimeUnit.DAYS);
+
+        return token;
     }
 
 }
