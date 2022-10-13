@@ -1,7 +1,7 @@
 package com.MinNiCup.lfmpbackend.pojo.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.MinNiCup.lfmpbackend.pojo.dto.resultEnum.ResultEnum;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 @Data

@@ -1,4 +1,4 @@
-package com.MinNiCup.lfmpbackend.myConfigure;
+package com.MinNiCup.lfmpbackend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

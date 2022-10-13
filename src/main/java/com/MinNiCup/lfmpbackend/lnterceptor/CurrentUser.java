@@ -2,8 +2,6 @@ package com.MinNiCup.lfmpbackend.lnterceptor;
 
 import lombok.Data;
 
-import java.io.Serializable;
-
 /**
  * @author tzih
  * @date 2022.10.13

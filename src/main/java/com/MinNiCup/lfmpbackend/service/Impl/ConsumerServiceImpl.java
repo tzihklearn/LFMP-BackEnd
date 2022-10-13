@@ -1,4 +1,4 @@
-package com.MinNiCup.lfmpbackend.service.impl;
+package com.MinNiCup.lfmpbackend.service.Impl;
 
 import com.MinNiCup.lfmpbackend.lnterceptor.CurrentUser;
 import com.MinNiCup.lfmpbackend.lnterceptor.CurrentUserUtil;
@@ -8,14 +8,11 @@ import com.MinNiCup.lfmpbackend.pojo.CommonResult;
 import com.MinNiCup.lfmpbackend.pojo.domain.UserInfo;
 import com.MinNiCup.lfmpbackend.pojo.dto.param.ModifyNameParam;
 import com.MinNiCup.lfmpbackend.pojo.dto.result.FreeConsultResult;
-import com.MinNiCup.lfmpbackend.pojo.dto.result.LawyerResult;
 import com.MinNiCup.lfmpbackend.service.ConsumerService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

@@ -3,7 +3,6 @@ package com.MinNiCup.lfmpbackend.controller;
 import com.MinNiCup.lfmpbackend.pojo.CommonResult;
 import com.MinNiCup.lfmpbackend.pojo.dto.param.ModifyNameParam;
 import com.MinNiCup.lfmpbackend.pojo.dto.result.FreeConsultResult;
-import com.MinNiCup.lfmpbackend.pojo.dto.result.LawyerResult;
 import com.MinNiCup.lfmpbackend.service.ConsumerService;
 import org.springframework.web.bind.annotation.*;
 

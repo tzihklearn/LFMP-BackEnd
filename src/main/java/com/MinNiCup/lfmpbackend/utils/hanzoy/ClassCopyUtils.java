@@ -13,8 +13,7 @@ public class ClassCopyUtils {
             Field[] destClassDeclaredFields = destClass.getDeclaredFields();
             int var7 = destClassDeclaredFields.length;
 
-            for(int var8 = 0; var8 < var7; ++var8) {
-                Field destClassDeclaredField = destClassDeclaredFields[var8];
+            for (Field destClassDeclaredField : destClassDeclaredFields) {
                 destClassDeclaredField.setAccessible(true);
                 String name = destClassDeclaredField.getName();
                 if (destClassDeclaredField.isAnnotationPresent(CopyProperty.class)) {
@@ -23,8 +22,7 @@ public class ClassCopyUtils {
 
                 int var12 = srcClassDeclaredFields.length;
 
-                for(int var13 = 0; var13 < var12; ++var13) {
-                    Field srcClassDeclaredField = srcClassDeclaredFields[var13];
+                for (Field srcClassDeclaredField : srcClassDeclaredFields) {
                     srcClassDeclaredField.setAccessible(true);
                     if (srcClassDeclaredField.getName().equals(name)) {
                         try {

@@ -1,4 +1,4 @@
-package com.MinNiCup.lfmpbackend.service.impl;
+package com.MinNiCup.lfmpbackend.service.Impl;
 
 import com.MinNiCup.lfmpbackend.mapper.UserInfoMapper;
 import com.MinNiCup.lfmpbackend.mapper.UserMapper;
