@@ -151,6 +151,7 @@ public class LoginServiceImpl implements LoginService {
             userInfo.setUserId(register.getId());
             userInfo.setName("未命名");
             userInfo.setPhone(verifyParam.getPhone());
+            userInfo.setIsLawyer(false);
 
             int r2 = userInfoMapper.insert(userInfo);
 
