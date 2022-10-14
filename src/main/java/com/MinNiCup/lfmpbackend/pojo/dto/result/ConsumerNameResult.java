@@ -7,12 +7,8 @@ import lombok.Data;
  * @date 2022.10.13
  */
 @Data
-public class FreeConsultResult {
+public class ConsumerNameResult {
 
-    String lawyerName;
-
-    String phone;
-
-    String data;
+    String name;
 
 }

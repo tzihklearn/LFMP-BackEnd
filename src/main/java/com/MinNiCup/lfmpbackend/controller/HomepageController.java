@@ -1,14 +1,13 @@
 package com.MinNiCup.lfmpbackend.controller;
 
 import com.MinNiCup.lfmpbackend.pojo.CommonResult;
-import com.MinNiCup.lfmpbackend.pojo.dto.result.LawyerResult;
+import com.MinNiCup.lfmpbackend.pojo.dto.param.CaseParam;
+import com.MinNiCup.lfmpbackend.pojo.dto.param.CaseSearchParam;
+import com.MinNiCup.lfmpbackend.pojo.dto.result.*;
 import com.MinNiCup.lfmpbackend.service.HomepageService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author tzih
@@ -23,16 +22,33 @@ public class HomepageController {
 
 
     @GetMapping("/lawyer-list")
-    public CommonResult<List<LawyerResult>> getLawyerList() {
-        return homepageService.getLawyerList();
+    public CommonResult<LawyerListResult> getLawyerList(@RequestParam Integer page) {
+        return homepageService.getLawyerList(page);
     }
 
     @GetMapping("/lawyer-keyword")
-    public CommonResult<List<LawyerResult>> lawyerSearch(String keyWord) {
-        return homepageService.lawyerSearch(keyWord);
+    public CommonResult<LawyerListResult> lawyerSearch(@RequestParam String keyWord, @RequestParam Integer page) {
+        return homepageService.lawyerSearch(keyWord, page);
     }
 
-//    @GetMapping("/lawyer-details")
-//    public CommonResult<>
+    @GetMapping("/lawyer-details")
+    public CommonResult<LawyerDetailsResult> lawyerDetails(@RequestParam Integer lawyerId) {
+        return homepageService.lawyerDetails(lawyerId);
+    }
+
+    @PutMapping("/case-list")
+    public CommonResult<CaseListResult> caseList(@RequestBody CaseParam caseParam) {
+        return homepageService.caseList(caseParam);
+    }
+
+    @PutMapping("/case-search")
+    public CommonResult<CaseListResult> caseSearch(@RequestBody CaseSearchParam caseSearchParam) {
+        return homepageService.caseSearch(caseSearchParam);
+    }
+
+    @GetMapping("/case-details")
+    public CommonResult<CaseDetailsResult> caseDetails(@RequestParam Integer caseId) {
+        return homepageService.caseDetails(caseId);
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.MinNiCup.lfmpbackend.pojo.domain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -12,7 +13,7 @@ import lombok.Data;
 @TableName("user_info")
 public class UserInfo {
 
-    @TableId
+    @TableId(type = IdType.AUTO)
     Integer userId;
 
     String loginId;
@@ -29,13 +30,17 @@ public class UserInfo {
 
     String wx;
 
-    String realmId;
+    Integer realmId;
+
+    Integer viceRealmId;
 
     String address;
 
-    String year;
+    Integer year;
 
     String intro;
+
+    String avatarUrl;
 
     Boolean isLawyer;
 

@@ -3,12 +3,22 @@
 <mapper namespace="com.MinNiCup.lfmpbackend.mapper.ConsultMapper">
 
 
-    <select id="selectFreeConsultByConsumer"
-            resultType="com.MinNiCup.lfmpbackend.pojo.dto.result.FreeConsultResult">
-        select ui.name as lawyerName, ui.phone as phone, c.data
+    <select id="selectConsumerConsultByConsumer"
+            resultType="com.MinNiCup.lfmpbackend.pojo.dto.result.ConsumerConsultResult">
+        select c.id as consultId , ui.name as name, ui.phone as phone, ui.address as address, c.data, c.is_reply as isReply
         from consult c
         left join user_info ui on c.lawyer_id = ui.user_id
-        where c.consumer_id = #{consumerId,javaType=INTEGER}
-            and c.model = 1
+        where c.consumer_id = #{consumerId,jdbcType=INTEGER}
+            and c.model = #{model,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectLawyerConsultByLawyer"
+            resultType="com.MinNiCup.lfmpbackend.pojo.dto.result.LawyerConsultResult">
+        select c.id as consultId, ui.name as name, ui.phone as phone, c.data as data, c.is_reply as isReply
+        from consult c
+                 left join user_info ui on c.consumer_id = ui.user_id
+        where c.lawyer_id = #{lawyerId,jdbcType=INTEGER}
+          and c.model = #{model,jdbcType=INTEGER}
+          and c.is_reply &lt;&gt; 2
     </select>
 </mapper>

@@ -1,9 +1,9 @@
 package com.MinNiCup.lfmpbackend.service;
 
 import com.MinNiCup.lfmpbackend.pojo.CommonResult;
-import com.MinNiCup.lfmpbackend.pojo.dto.result.LawyerResult;
-
-import java.util.List;
+import com.MinNiCup.lfmpbackend.pojo.dto.param.CaseParam;
+import com.MinNiCup.lfmpbackend.pojo.dto.param.CaseSearchParam;
+import com.MinNiCup.lfmpbackend.pojo.dto.result.*;
 
 /**
  * @author tzih
@@ -11,8 +11,16 @@ import java.util.List;
  */
 public interface HomepageService {
 
-    CommonResult<List<LawyerResult>> getLawyerList();
+    CommonResult<LawyerListResult> getLawyerList(Integer page);
 
-    CommonResult<List<LawyerResult>> lawyerSearch(String keyWord);
+    CommonResult<LawyerListResult> lawyerSearch(String keyWord, Integer page);
+
+    CommonResult<LawyerDetailsResult> lawyerDetails(Integer lawyerId);
+
+    CommonResult<CaseListResult> caseList(CaseParam caseParam);
+
+    CommonResult<CaseListResult> caseSearch(CaseSearchParam caseSearchParam);
+
+    CommonResult<CaseDetailsResult> caseDetails(Integer caseId);
 
 }
