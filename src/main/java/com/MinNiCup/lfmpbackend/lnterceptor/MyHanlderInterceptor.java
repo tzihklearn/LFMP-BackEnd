@@ -38,6 +38,7 @@ public class MyHanlderInterceptor implements HandlerInterceptor {
 
         if (token == null) {
             log.info("没有token");
+            setResponse(response);
             return false;
         }
 
@@ -60,6 +61,24 @@ public class MyHanlderInterceptor implements HandlerInterceptor {
                     User user = userMapper.selectAllByAccount(account);
 
                     if (user != null) {
+
+                        String url = request.getRequestURI();
+
+                        if (url.matches("/consumer/(.*)")) {
+                            if (user.getIdIdent() != 0) {
+                                log.info("不是用户");
+                                setResponse(response);
+                                return false;
+                            }
+                        }
+
+                        if (url.matches("/lawyer/(.*)")) {
+                            if (user.getIdIdent() != 2) {
+                                log.info("不是律师");
+                                setResponse(response);
+                                return false;
+                            }
+                        }
 
                         log.info("将登录用户放到ThreadLocal变量变量中");
                         //将登录用户放到ThreadLocal变量变量中，方便业务获取当前登录用户
@@ -90,8 +109,19 @@ public class MyHanlderInterceptor implements HandlerInterceptor {
 
         log.warn("token校验未通过");
 
-        CommonResult<String> objectCommonResult = CommonResult.token_error();
 
+        setResponse(response);
+
+
+        return false;
+
+
+//        return HandlerInterceptor.super.preHandle(request, response, handler);
+    }
+
+    private void setResponse(HttpServletResponse response) {
+
+        CommonResult<String> objectCommonResult = CommonResult.token_error();
         try {
             //将 map装换为json ResponseBody底层使用jackson
             String json = new ObjectMapper().writeValueAsString(objectCommonResult);
@@ -100,10 +130,6 @@ public class MyHanlderInterceptor implements HandlerInterceptor {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        return false;
-
-
-//        return HandlerInterceptor.super.preHandle(request, response, handler);
     }
+
 }

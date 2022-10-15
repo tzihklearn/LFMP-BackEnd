@@ -15,6 +15,8 @@ public class LawyerResult {
 
     String name;
 
+    String avatarUrl;
+
     String intro;
 
 }
