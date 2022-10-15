@@ -11,5 +11,5 @@ import java.util.List;
 public interface ConsultMapper extends BaseMapper<Consult> {
 
     List<FreeConsultResult> selectFreeConsultByConsumer(Integer consumerId);
-
+    Consult selectByConsultId(Integer id);
 }

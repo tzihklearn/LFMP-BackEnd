@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.MinNiCup.lfmpbackend.mapper.MessageMapper">
+    <resultMap id="BaseResultMap" type="com.MinNiCup.lfmpbackend.pojo.domain.Message">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="message" jdbcType="VARCHAR" property="message"/>
+        <result column="from" jdbcType="INTEGER" property="from"/>
+        <result column="to" jdbcType="INTEGER" property="to"/>
+        <result column="date" jdbcType="BIGINT" property="date"/>
+        <result column="consult_id" jdbcType="BIT" property="consultId"/>
+    </resultMap>
+
+    <insert id="insertMessage">
+        INSERT INTO message( `from`, `to`, date, type, message, consult_id)
+        VALUES( #{from}, #{to}, #{date}, #{type}, #{message}, #{consultId})
+    </insert>
+
+    <select id="selectMessageByConsultId" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+            message
+        WHERE
+            consult_id = #{consultId}
+        ORDER BY
+            date
+    </select>
+
+</mapper>
