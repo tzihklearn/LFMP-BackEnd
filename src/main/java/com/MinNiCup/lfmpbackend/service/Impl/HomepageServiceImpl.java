@@ -50,7 +50,7 @@ public class HomepageServiceImpl implements HomepageService {
         List<LawyerResult> lawyers = new ArrayList<>();
 
         for (UserInfo userInfo : lawyerList) {
-            lawyers.add(new LawyerResult(userInfo.getUserId(), userInfo.getName(), userInfo.getIntro()));
+            lawyers.add(new LawyerResult(userInfo.getUserId(), userInfo.getName(), userInfo.getAvatarUrl(), userInfo.getIntro()));
         }
 
         LawyerListResult results = new LawyerListResult();
@@ -71,7 +71,7 @@ public class HomepageServiceImpl implements HomepageService {
         List<LawyerResult> lawyers = new ArrayList<>();
 
         for (UserInfo userInfo : lawyerList) {
-            lawyers.add(new LawyerResult(userInfo.getUserId(), userInfo.getName(), userInfo.getIntro()));
+            lawyers.add(new LawyerResult(userInfo.getUserId(), userInfo.getName(), userInfo.getAvatarUrl(), userInfo.getIntro()));
         }
 
         LawyerListResult results = new LawyerListResult();
