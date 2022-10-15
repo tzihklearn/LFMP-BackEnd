@@ -14,5 +14,5 @@ public interface ConsultMapper extends BaseMapper<Consult> {
     List<ConsumerConsultResult> selectConsumerConsultByConsumer(Integer consumerId, Integer model);
 
     List<LawyerConsultResult> selectLawyerConsultByLawyer(Integer lawyerId, Integer model);
-
+    Consult selectByConsultId(Integer id);
 }

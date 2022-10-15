@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.MinNiCup.lfmpbackend.mapper.ConsultMapper">
 
-
     <select id="selectConsumerConsultByConsumer"
             resultType="com.MinNiCup.lfmpbackend.pojo.dto.result.ConsumerConsultResult">
         select c.id as consultId , ui.name as name, ui.phone as phone, ui.address as address, c.data, c.is_reply as isReply
@@ -20,5 +19,13 @@
         where c.lawyer_id = #{lawyerId,jdbcType=INTEGER}
           and c.model = #{model,jdbcType=INTEGER}
           and c.is_reply &lt;&gt; 2
+    </select>
+    <select id="selectByConsultId" resultType="com.MinNiCup.lfmpbackend.pojo.domain.Consult">
+        SELECT
+            *
+        FROM
+            consult
+        WHERE
+            id = #{id}
     </select>
 </mapper>

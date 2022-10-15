@@ -1,7 +1,7 @@
 package com.MinNiCup.lfmpbackend.lnterceptor;
 
 import com.MinNiCup.lfmpbackend.mapper.UserMapper;
-import com.MinNiCup.lfmpbackend.pojo.CommonResult;
+import com.MinNiCup.lfmpbackend.pojo.dto.CommonResult;
 import com.MinNiCup.lfmpbackend.pojo.domain.User;
 import com.MinNiCup.lfmpbackend.utils.JwtUtil;
 import com.MinNiCup.lfmpbackend.utils.RedisUtils.RedisUtil;
@@ -121,7 +121,7 @@ public class MyHanlderInterceptor implements HandlerInterceptor {
 
     private void setResponse(HttpServletResponse response) {
 
-        CommonResult<String> objectCommonResult = CommonResult.token_error();
+        CommonResult<String> objectCommonResult = CommonResult.userAuthError();
         try {
             //将 map装换为json ResponseBody底层使用jackson
             String json = new ObjectMapper().writeValueAsString(objectCommonResult);
