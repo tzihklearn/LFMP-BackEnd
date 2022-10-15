@@ -70,7 +70,7 @@ public class LoginServiceImpl implements LoginService {
         }
 
         loginParam.setPassword(md5Str);
-
+        System.out.println(md5Str);
         UserPo userPo = userMapper.selectByLogin(loginParam);
 
         if (userPo == null) {

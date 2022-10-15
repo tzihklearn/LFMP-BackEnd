@@ -5,18 +5,18 @@ import lombok.Data;
 
 /**
  * @author tzih
- * @date 2022.10.13
+ * @date 2022.10.14
  */
 @Data
 @AllArgsConstructor
-public class LawyerResult {
+public class CaseResult {
 
-    Integer lawyerId;
+    Integer caseId;
 
-    String name;
+    String title;
 
-    String avatarUrl;
+    String guid;
 
-    String intro;
+    String coverUrl;
 
 }

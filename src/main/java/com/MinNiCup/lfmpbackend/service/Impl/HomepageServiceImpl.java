@@ -1,16 +1,26 @@
 package com.MinNiCup.lfmpbackend.service.Impl;
 
+import com.MinNiCup.lfmpbackend.mapper.ExampleMapper;
+import com.MinNiCup.lfmpbackend.mapper.FieldMapper;
+import com.MinNiCup.lfmpbackend.mapper.FieldNextMapper;
 import com.MinNiCup.lfmpbackend.mapper.UserInfoMapper;
 import com.MinNiCup.lfmpbackend.pojo.CommonResult;
+import com.MinNiCup.lfmpbackend.pojo.domain.Example;
+import com.MinNiCup.lfmpbackend.pojo.domain.Field;
+import com.MinNiCup.lfmpbackend.pojo.domain.FieldNext;
 import com.MinNiCup.lfmpbackend.pojo.domain.UserInfo;
-import com.MinNiCup.lfmpbackend.pojo.dto.result.LawyerResult;
+import com.MinNiCup.lfmpbackend.pojo.dto.param.CaseParam;
+import com.MinNiCup.lfmpbackend.pojo.dto.param.CaseSearchParam;
+import com.MinNiCup.lfmpbackend.pojo.dto.result.*;
 import com.MinNiCup.lfmpbackend.service.HomepageService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author tzih
@@ -22,33 +32,170 @@ public class HomepageServiceImpl implements HomepageService {
     @Resource
     private UserInfoMapper userInfoMapper;
 
-    @Override
-    public CommonResult<List<LawyerResult>> getLawyerList() {
+    @Resource
+    private FieldMapper fieldMapper;
 
-        List<UserInfo> lawyerList = userInfoMapper.selectList(new QueryWrapper<UserInfo>().eq("isLawyer", 1));
+    @Resource
+    private FieldNextMapper fieldNextMapper;
 
-        List<LawyerResult> results = new ArrayList<>();
-
-        for (UserInfo userInfo : lawyerList) {
-            results.add(new LawyerResult(userInfo.getUserId(), userInfo.getName(), userInfo.getIntro()));
-        }
-
-        return CommonResult.success(results);
-    }
+    @Resource
+    private ExampleMapper exampleMapper;
 
     @Override
-    public CommonResult<List<LawyerResult>> lawyerSearch(String keyWord) {
+    public CommonResult<LawyerListResult> getLawyerList(Integer page) {
 
         List<UserInfo> lawyerList = userInfoMapper.selectList(
-                new QueryWrapper<UserInfo>().eq("isLawyer", 1).like("name", keyWord));
+                new QueryWrapper<UserInfo>().eq("is_lawyer", 1).last("limit " + page+ "," + 5));
 
-        List<LawyerResult> results = new ArrayList<>();
+        List<LawyerResult> lawyers = new ArrayList<>();
 
         for (UserInfo userInfo : lawyerList) {
-            results.add(new LawyerResult(userInfo.getUserId(), userInfo.getName(), userInfo.getIntro()));
+            lawyers.add(new LawyerResult(userInfo.getUserId(), userInfo.getName(), userInfo.getAvatarUrl(), userInfo.getIntro()));
         }
+
+        LawyerListResult results = new LawyerListResult();
+
+        results.setLawyerResults(lawyers);
+        results.setPage(page + 5);
 
         return CommonResult.success(results);
     }
 
+    @Override
+    public CommonResult<LawyerListResult> lawyerSearch(String keyWord, Integer page) {
+
+        List<UserInfo> lawyerList = userInfoMapper.selectList(
+                new QueryWrapper<UserInfo>().eq("is_lawyer", 1).like("name", keyWord)
+                        .last("limit " + page + "," + 5));
+
+        List<LawyerResult> lawyers = new ArrayList<>();
+
+        for (UserInfo userInfo : lawyerList) {
+            lawyers.add(new LawyerResult(userInfo.getUserId(), userInfo.getName(), userInfo.getAvatarUrl(), userInfo.getIntro()));
+        }
+
+        LawyerListResult results = new LawyerListResult();
+
+        results.setLawyerResults(lawyers);
+        results.setPage(page + 5);
+
+        return CommonResult.success(results);
+    }
+
+    @Override
+    public CommonResult<LawyerDetailsResult> lawyerDetails(Integer lawyerId) {
+
+        UserInfo userInfo = userInfoMapper.selectById(lawyerId);
+
+        Field fieldFirst = fieldMapper.selectOne(new QueryWrapper<Field>().select("field_first").eq("id", userInfo.getRealmId()));
+
+        Field fieldSecond = fieldMapper.selectOne(
+                new QueryWrapper<Field>().select("field_first").eq("id", userInfo.getViceRealmId()));
+
+        LawyerDetailsResult result = new LawyerDetailsResult();
+
+        result.setLawyerId(userInfo.getUserId());
+        result.setName(userInfo.getName());
+        result.setAvatarUrl(userInfo.getAvatarUrl());
+        result.setYear(userInfo.getYear());
+        result.setPhone(userInfo.getPhone());
+        result.setAddress(userInfo.getAddress());
+        result.setIntro(userInfo.getIntro());
+        result.setRealm(fieldFirst.getFieldFirst());
+        result.setViceRealm(fieldSecond.getFieldFirst());
+
+        return CommonResult.success(result);
+    }
+
+    @Override
+    public CommonResult<CaseListResult> caseList(CaseParam caseParam) {
+
+        CaseListResult result = new CaseListResult();
+
+        List<CaseResult> caseList = new ArrayList<>();
+
+        result.setCaseList(caseList);
+        result.setPage(caseParam.getPage() + 5);
+
+        Map<String, Object> map = new HashMap<>();
+
+        if (caseParam.getFieldFirst() != null) {
+            Field field = fieldMapper.selectOne(new QueryWrapper<Field>().select("id").eq("field_first", caseParam.getFieldFirst()));
+            if (field != null) {
+                map.put("field_id", field.getId());
+            }
+            else {
+                return CommonResult.success(result);
+            }
+        }
+        if (caseParam.getFieldSecond() != null) {
+            FieldNext fieldNext = fieldNextMapper.selectOne(
+                    new QueryWrapper<FieldNext>().select("id").eq("field_second", caseParam.getFieldSecond()));
+            if (fieldNext != null) {
+                map.put("field_next_id", fieldNext.getId());
+            }
+            else {
+                return CommonResult.success(result);
+            }
+        }
+
+        List<Example> examples = exampleMapper.selectList(new QueryWrapper<Example>().allEq(map)
+                .last("limit " + caseParam.getPage() + "," + 5));
+
+
+        for (Example aExample : examples) {
+            caseList.add(new CaseResult(aExample.getId(), aExample.getTitle(), aExample.getGuid(), aExample.getCoverUrl()));
+        }
+
+        result.setCaseList(caseList);
+
+        return CommonResult.success(result);
+    }
+
+    @Override
+    public CommonResult<CaseListResult> caseSearch(CaseSearchParam caseSearchParam) {
+
+        CaseListResult result = new CaseListResult();
+
+        List<CaseResult> caseList = new ArrayList<>();
+
+        result.setCaseList(caseList);
+        result.setPage(caseSearchParam.getPage() + 5);
+
+        List<Example> examples = exampleMapper.selectList(new QueryWrapper<Example>()
+                .and(i -> i.like("title", caseSearchParam.getKeyword()).or().like("guid", caseSearchParam.getKeyword()))
+                .last("limit " + caseSearchParam.getPage() + "," + 5));
+
+        for (Example aExample : examples) {
+            caseList.add(new CaseResult(aExample.getId(), aExample.getTitle(), aExample.getGuid(), aExample.getCoverUrl()));
+        }
+
+        result.setCaseList(caseList);
+        result.setPage(caseSearchParam.getPage() + 5);
+
+        return CommonResult.success(result);
+
+    }
+
+    @Override
+    public CommonResult<CaseDetailsResult> caseDetails(Integer caseId) {
+
+        Example example = exampleMapper.selectOne(new QueryWrapper<Example>().eq("id", caseId));
+
+        UserInfo userInfo = userInfoMapper.selectOne(new QueryWrapper<UserInfo>().eq("user_id", example.getLawyerId()));
+
+        CaseDetailsResult result = new CaseDetailsResult();
+
+        result.setGuid(example.getGuid());
+        result.setTitleFirst(example.getTitleFirst());
+        result.setTextFirst(example.getTextFirst());
+        result.setTitleSecond(example.getTitleSecond());
+        result.setTextSecond(example.getTextSecond());
+        result.setSolveUrl(example.getSolveUrl());
+        result.setAvatarUrl(userInfo.getAvatarUrl());
+        result.setLawyerName(userInfo.getName());
+        result.setPhone(userInfo.getPhone());
+
+        return CommonResult.success(result);
+    }
 }

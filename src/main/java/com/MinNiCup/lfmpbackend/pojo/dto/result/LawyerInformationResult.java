@@ -1,6 +1,5 @@
 package com.MinNiCup.lfmpbackend.pojo.dto.result;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -8,14 +7,17 @@ import lombok.Data;
  * @date 2022.10.13
  */
 @Data
-@AllArgsConstructor
-public class LawyerResult {
-
-    Integer lawyerId;
+public class LawyerInformationResult {
 
     String name;
 
-    String avatarUrl;
+    String phone;
+
+    String realm;
+
+    String address;
+
+    Integer year;
 
     String intro;
 
