@@ -51,21 +51,24 @@ public class WsInterceptor implements HandshakeInterceptor {
      * @return whether to proceed with the handshake ({@code true}) or abort ({@code false})
      */
     @Override
-    public boolean beforeHandshake(@NotNull ServerHttpRequest request, @NotNull ServerHttpResponse response, @NotNull WebSocketHandler wsHandler, @NotNull Map<String, Object> attributes) throws Exception {
-
-        String token = null;
+    public boolean beforeHandshake(@NotNull ServerHttpRequest request, @NotNull ServerHttpResponse response, @NotNull WebSocketHandler wsHandler, @NotNull Map<String, Object> attributes) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        WsConnectParam param = null;
         try {
-            token = Objects.requireNonNull(request.getHeaders().get("Sec-WebSocket-Protocol")).get(0);
-        } catch (NullPointerException e){
-//            log.info(e.getMessage());
+            param = objectMapper.readValue(
+                    Objects.requireNonNull(request.getHeaders().get("Sec-WebSocket-Protocol")).get(0),
+                    WsConnectParam.class);
+        } catch (Exception e){
+            log.warn(e.getMessage());
+            log.warn(Arrays.toString(e.getStackTrace()));
         }
 
-        if (token == null) {
+        if (param == null || param.getToken() == null) {
             log.info("没有token");
             return false;
         }
 
-        DecodedJWT decode = JwtUtil.decode(token);
+        DecodedJWT decode = JwtUtil.decode(param.getToken());
         int paramCheck = 0;
         if (decode != null ) {
             String toString = decode.getClaim("account").toString();
@@ -74,20 +77,10 @@ public class WsInterceptor implements HandshakeInterceptor {
             Object o = redisUtil.get(account);
             if (o != null) {
                 String str = o.toString();
-                if (str.equals(token)) {
+                if (str.equals(param.getToken())) {
                     log.info("从数据库里查询用户");
                     User user = userMapper.selectAllByAccount(account);
                     if (user != null) {
-                        InputStream body = request.getBody();
-                        ObjectMapper objectMapper = new ObjectMapper();
-                        WsConnectParam param = null;
-                        try {
-                            param = new WsConnectParam();
-                            param.setConsultId(Integer.valueOf(Objects.requireNonNull(request.getHeaders().get("Sec-WebSocket-Protocol")).get(1)));
-                        } catch (Exception e){
-                            log.warn(e.getMessage());
-                            log.warn(Arrays.toString(e.getStackTrace()));
-                        }
                         if (param != null && param.getConsultId() != null){
                             Consult consult = ConsultUtil.checkUserAndConsult(param, user);
                             if (consult.getId() != 0){
@@ -102,7 +95,8 @@ public class WsInterceptor implements HandshakeInterceptor {
                             else {
                                 log.info("咨询与当前用户不匹配");
                                 paramCheck = 2;
-                            }                        }
+                            }
+                        }
                         else {
                             log.info("未查询到咨询信息");
                             paramCheck = 1;
