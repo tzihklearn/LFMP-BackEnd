@@ -85,7 +85,7 @@ public class HttpAuthHandler extends TextWebSocketHandler {
         }
         String sendMessage = MessageUtil.sendMessage(
                 user.getId(),
-                (user.getIdIdent() == 2 ? consult.getConsumerId() : consult.getLawyerId()),
+                (user.getIsIdent() == 2 ? consult.getConsumerId() : consult.getLawyerId()),
                 consult.getId(),
                 MessageUtil.msgParamJson2MsgParam(message.getPayload())
                 );
