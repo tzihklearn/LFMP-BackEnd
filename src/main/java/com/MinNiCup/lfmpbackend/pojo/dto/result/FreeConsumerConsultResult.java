@@ -4,10 +4,10 @@ import lombok.Data;
 
 /**
  * @author tzih
- * @date 2022.10.13
+ * @date 2022.10.15
  */
 @Data
-public class ConsumerConsultResult {
+public class FreeConsumerConsultResult {
 
     Integer consultId;
 
@@ -20,6 +20,8 @@ public class ConsumerConsultResult {
     String address;
 
     String data;
+
+    String reviewData;
 
     Integer isReply;
 

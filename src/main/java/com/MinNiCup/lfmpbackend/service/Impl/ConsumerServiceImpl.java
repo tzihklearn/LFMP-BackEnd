@@ -9,8 +9,10 @@ import com.MinNiCup.lfmpbackend.pojo.domain.Consult;
 import com.MinNiCup.lfmpbackend.pojo.domain.UserInfo;
 import com.MinNiCup.lfmpbackend.pojo.dto.param.CommitConsultParam;
 import com.MinNiCup.lfmpbackend.pojo.dto.param.ModifyNameParam;
+import com.MinNiCup.lfmpbackend.pojo.dto.result.CommitConsultResult;
 import com.MinNiCup.lfmpbackend.pojo.dto.result.ConsumerNameResult;
 import com.MinNiCup.lfmpbackend.pojo.dto.result.ConsumerConsultResult;
+import com.MinNiCup.lfmpbackend.pojo.dto.result.FreeConsumerConsultResult;
 import com.MinNiCup.lfmpbackend.service.ConsumerService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -65,11 +67,11 @@ public class ConsumerServiceImpl implements ConsumerService {
     }
 
     @Override
-    public CommonResult<List<ConsumerConsultResult>> freeConsult() {
+    public CommonResult<List<FreeConsumerConsultResult>> freeConsult() {
 
         CurrentUser currentUser = CurrentUserUtil.getCurrentUser();
 
-        List<ConsumerConsultResult> results = consultMapper.selectConsumerConsultByConsumer(currentUser.getId(), 1);
+        List<FreeConsumerConsultResult> results = consultMapper.selectFreeConsumerConsultByConsumer(currentUser.getId(), 1);
 
         return CommonResult.success(results);
     }
@@ -96,7 +98,13 @@ public class ConsumerServiceImpl implements ConsumerService {
     }
 
     @Override
-    public CommonResult<String> commitConsult(CommitConsultParam commitConsultParam) {
+    public CommonResult<CommitConsultResult> commitConsult(CommitConsultParam commitConsultParam) {
+
+        int isReply = 0;
+
+        if (commitConsultParam.getModel() == 2) {
+            isReply = 1;
+        }
 
         CurrentUser currentUser = CurrentUserUtil.getCurrentUser();
 
@@ -108,7 +116,7 @@ public class ConsumerServiceImpl implements ConsumerService {
             consult.setData(commitConsultParam.getData());
         }
         consult.setModel(commitConsultParam.getModel());
-        consult.setIsReply(0);
+        consult.setIsReply(isReply);
 
         int insert = consultMapper.insert(consult);
 
@@ -116,6 +124,18 @@ public class ConsumerServiceImpl implements ConsumerService {
             return CommonResult.fail("提交咨询失败");
         }
 
-        return CommonResult.success("提交咨询成功");
+        Consult consultId = consultMapper.selectOne(new QueryWrapper<Consult>().select("id")
+                .eq("consumer_id", currentUser.getId())
+                .eq("lawyer_id", commitConsultParam.getLawyerId())
+                .eq("model", commitConsultParam.getModel())
+                .eq("is_reply", isReply)
+                .orderByDesc("id")
+                .last("limit 1"));
+
+        CommitConsultResult result = new CommitConsultResult();
+
+        result.setConsultId(consultId.getId());
+
+        return CommonResult.success(result);
     }
 }

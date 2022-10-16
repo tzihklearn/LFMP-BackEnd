@@ -20,6 +20,6 @@ public class User {
 
     String password;
 
-    Integer idIdent;
+    Integer isIdent;
 
 }

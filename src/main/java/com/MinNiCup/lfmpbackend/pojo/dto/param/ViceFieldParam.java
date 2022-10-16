@@ -4,11 +4,11 @@ import lombok.Data;
 
 /**
  * @author tzih
- * @date 2022.10.14
+ * @date 2022.10.16
  */
 @Data
-public class CaseSearchParam {
+public class ViceFieldParam {
 
-    String keyword;
+    String text;
 
 }

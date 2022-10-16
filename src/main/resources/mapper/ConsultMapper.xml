@@ -4,11 +4,13 @@
 
     <select id="selectConsumerConsultByConsumer"
             resultType="com.MinNiCup.lfmpbackend.pojo.dto.result.ConsumerConsultResult">
-        select c.id as consultId , ui.name as name, ui.phone as phone, ui.address as address, c.data, c.is_reply as isReply
+        select c.id as consultId , ui.name as name, ui.phone as phone, f.field_first as field,
+               ui.address as address, c.data, c.is_reply as isReply
         from consult c
-        left join user_info ui on c.lawyer_id = ui.user_id
+                 left join user_info ui on c.lawyer_id = ui.user_id
+                 left join field f on f.id = ui.realm_id
         where c.consumer_id = #{consumerId,jdbcType=INTEGER}
-            and c.model = #{model,jdbcType=INTEGER}
+          and c.model = #{model,jdbcType=INTEGER}
     </select>
 
     <select id="selectLawyerConsultByLawyer"
@@ -19,6 +21,16 @@
         where c.lawyer_id = #{lawyerId,jdbcType=INTEGER}
           and c.model = #{model,jdbcType=INTEGER}
           and c.is_reply &lt;&gt; 2
+    </select>
+    <select id="selectFreeConsumerConsultByConsumer"
+            resultType="com.MinNiCup.lfmpbackend.pojo.dto.result.FreeConsumerConsultResult">
+        select c.id as consultId , ui.name as name, ui.phone as phone, f.field_first as field,
+               ui.address as address, c.data, c.review_data as reviewData, c.is_reply as isReply
+        from consult c
+                 left join user_info ui on c.lawyer_id = ui.user_id
+                 left join field f on f.id = ui.realm_id
+        where c.consumer_id = #{consumerId,jdbcType=INTEGER}
+          and c.model = #{model,jdbcType=INTEGER}
     </select>
     <select id="selectByConsultId" resultType="com.MinNiCup.lfmpbackend.pojo.domain.Consult">
         SELECT

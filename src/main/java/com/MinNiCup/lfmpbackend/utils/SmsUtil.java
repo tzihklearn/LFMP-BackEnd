@@ -12,8 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SmsUtil {
 
-    private static final String SecretId = "AKIDjLmBWdYEiy1rVzPdcO9nGWbYJrFRQBjm";
-    private static final String SecretKey = "xhCVeaJoFUWKxSnvsiU8cv3024uWyJUS";
+    private static final String SecretId = "";
+    private static final String SecretKey = "";
 
     /**
      * 短信 SdkAppId，在 [短信控制台](<a href="https://console.cloud.tencent.com/smsv2/app-manage">...</a>)  添加应用后生成的实际 SdkAppId，示例如1400006666。

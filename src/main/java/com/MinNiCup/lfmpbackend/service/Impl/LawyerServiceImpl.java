@@ -11,6 +11,7 @@ import com.MinNiCup.lfmpbackend.pojo.domain.Field;
 import com.MinNiCup.lfmpbackend.pojo.domain.UserInfo;
 import com.MinNiCup.lfmpbackend.pojo.dto.param.LawyerInformationParam;
 import com.MinNiCup.lfmpbackend.pojo.dto.param.ReviewFreeConsultParam;
+import com.MinNiCup.lfmpbackend.pojo.dto.param.SetPhoneConsultParam;
 import com.MinNiCup.lfmpbackend.pojo.dto.result.LawyerAvatarResult;
 import com.MinNiCup.lfmpbackend.pojo.dto.result.LawyerConsultResult;
 import com.MinNiCup.lfmpbackend.pojo.dto.result.LawyerInformationResult;
@@ -144,4 +145,17 @@ public class LawyerServiceImpl implements LawyerService {
         return CommonResult.success("回复成功");
     }
 
+    @Override
+    public CommonResult<String> setPhoneConsult(SetPhoneConsultParam setPhoneConsultParam) {
+
+        int update = consultMapper.update(null,
+                new UpdateWrapper<Consult>().set("is_reply", setPhoneConsultParam.getIsReply())
+                        .eq("id", setPhoneConsultParam.getConsultId()).eq("model", 3));
+
+        if (update != 1) {
+            return CommonResult.fail("设置失败");
+        }
+
+        return CommonResult.success("设置成功");
+    }
 }

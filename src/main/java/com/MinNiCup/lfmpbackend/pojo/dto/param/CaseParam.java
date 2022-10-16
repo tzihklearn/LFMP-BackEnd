@@ -13,6 +13,4 @@ public class CaseParam {
 
     String fieldSecond;
 
-    Integer page;
-
 }

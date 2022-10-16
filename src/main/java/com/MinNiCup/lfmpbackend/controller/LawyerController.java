@@ -3,6 +3,7 @@ package com.MinNiCup.lfmpbackend.controller;
 import com.MinNiCup.lfmpbackend.pojo.dto.CommonResult;
 import com.MinNiCup.lfmpbackend.pojo.dto.param.LawyerInformationParam;
 import com.MinNiCup.lfmpbackend.pojo.dto.param.ReviewFreeConsultParam;
+import com.MinNiCup.lfmpbackend.pojo.dto.param.SetPhoneConsultParam;
 import com.MinNiCup.lfmpbackend.pojo.dto.result.LawyerAvatarResult;
 import com.MinNiCup.lfmpbackend.pojo.dto.result.LawyerConsultResult;
 import com.MinNiCup.lfmpbackend.pojo.dto.result.LawyerInformationResult;
@@ -56,6 +57,11 @@ public class LawyerController {
     @PostMapping("/review-free-consult")
     public CommonResult<String> reviewFreeConsult(@RequestBody ReviewFreeConsultParam reviewFreeConsultParam) {
         return lawyerService.reviewFreeConsult(reviewFreeConsultParam);
+    }
+
+    @PostMapping("/set-phone-consult")
+    public CommonResult<String> setPhoneConsult(@RequestBody SetPhoneConsultParam setPhoneConsultParam) {
+        return lawyerService.setPhoneConsult(setPhoneConsultParam);
     }
 
 }
