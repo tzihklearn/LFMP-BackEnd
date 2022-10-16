@@ -2,7 +2,7 @@ package com.MinNiCup.lfmpbackend.service.Impl;
 
 import com.MinNiCup.lfmpbackend.mapper.UserInfoMapper;
 import com.MinNiCup.lfmpbackend.mapper.UserMapper;
-import com.MinNiCup.lfmpbackend.pojo.CommonResult;
+import com.MinNiCup.lfmpbackend.pojo.dto.CommonResult;
 import com.MinNiCup.lfmpbackend.pojo.domain.User;
 import com.MinNiCup.lfmpbackend.pojo.domain.UserInfo;
 import com.MinNiCup.lfmpbackend.pojo.dto.param.LoginParam;
@@ -171,7 +171,7 @@ public class LoginServiceImpl implements LoginService {
         String token = request.getHeader("Authorization");
         DecodedJWT decode = JwtUtil.decode(token);
         if (decode == null) {
-            return CommonResult.token_error();
+            return CommonResult.userAuthError();
         }
 
         String account = decode.getClaim("account").toString();
@@ -179,7 +179,7 @@ public class LoginServiceImpl implements LoginService {
         String str = account.replaceAll("\"", "");
 
         if ( !str.equals(loginTokenParam.getAccount())) {
-            return CommonResult.token_error();
+            return CommonResult.userAuthError();
         }
 
         LoginResult loginResult = userMapper.selectLoginByAccount(str);
