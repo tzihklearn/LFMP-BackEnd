@@ -1,6 +1,6 @@
 package com.MinNiCup.lfmpbackend.controller;
 
-import com.MinNiCup.lfmpbackend.pojo.CommonResult;
+import com.MinNiCup.lfmpbackend.pojo.dto.CommonResult;
 import com.MinNiCup.lfmpbackend.pojo.dto.param.CommitConsultParam;
 import com.MinNiCup.lfmpbackend.pojo.dto.param.ModifyNameParam;
 import com.MinNiCup.lfmpbackend.pojo.dto.result.CommitConsultResult;

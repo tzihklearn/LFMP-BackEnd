@@ -5,7 +5,7 @@ import com.MinNiCup.lfmpbackend.lnterceptor.CurrentUserUtil;
 import com.MinNiCup.lfmpbackend.mapper.ConsultMapper;
 import com.MinNiCup.lfmpbackend.mapper.FieldMapper;
 import com.MinNiCup.lfmpbackend.mapper.UserInfoMapper;
-import com.MinNiCup.lfmpbackend.pojo.CommonResult;
+import com.MinNiCup.lfmpbackend.pojo.dto.CommonResult;
 import com.MinNiCup.lfmpbackend.pojo.domain.Consult;
 import com.MinNiCup.lfmpbackend.pojo.domain.Field;
 import com.MinNiCup.lfmpbackend.pojo.domain.UserInfo;

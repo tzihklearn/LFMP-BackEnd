@@ -20,7 +20,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry
-                .addHandler(httpAuthHandler, "wstalk")
+                .addHandler(httpAuthHandler, "/wstalk")
                 .addInterceptors(wsInterceptor);
     }
 }
