@@ -28,12 +28,13 @@ public class MessageUtil {
 
     private static MessageUtil messageUtil;
 
-    public static String sendMessage(Integer from, Integer to, SendMessageParam param) {
+    public static String sendMessage(Integer from, Integer to, Integer consultId, SendMessageParam param) {
         Message message = new Message();
         message.setMessage(param.getMessage());
         message.setDate(TimeUtils.getNow());
         message.setFrom(from);
         message.setTo(to);
+        message.setConsultId(consultId);
         messageUtil.messageMapper.insertMessage(message);
         MessageResult result = new MessageResult(message, false);
         return MessageResult2MsgJson(result);

@@ -31,7 +31,7 @@ public class ConsultUtil {
         Consult consult = consultUtil.consultMapper.selectByConsultId(param.getConsultId());
         if (consult == null)
             return consult;
-        if (!Objects.equals(consult.getConsumerId(), user.getIdIdent() == 2 ? consult.getLawyerId() : consult.getConsumerId()))
+        if (!Objects.equals(user.getId(), user.getIdIdent() == 2 ? consult.getLawyerId() : consult.getConsumerId()))
             consult.setId(0);
         return consult;
     }
