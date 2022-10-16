@@ -27,7 +27,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         //配置拦截的请求和不拦截的请求
         registry.addInterceptor(myHanlderInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/login/**", "/wstalk/*");
+                .excludePathPatterns("/login/**", "/wstalk");
     }
 
 }
