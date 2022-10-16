@@ -27,6 +27,7 @@ public class HttpAuthHandler extends TextWebSocketHandler {
      */
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
+        log.info("握手结束，开始通信");
         Map<String, Object> attributes = session.getAttributes();
         Object consultObj = attributes.get(AttributesKeys.CONSULT.getName());
         Object userObj = attributes.get(AttributesKeys.USER.getName());
@@ -50,8 +51,10 @@ public class HttpAuthHandler extends TextWebSocketHandler {
         for (MessageResult messageResult : MessageUtil.getStoredMessage(user.getId(), consult.getId())) {
             sendMessage(session, MessageUtil.MessageResult2MsgJson(messageResult));
         }
-        if (session.getAttributes().get("AC") == "YES")
+        if (session.getAttributes().get("AC") == "YES") {
+            log.info("咨询结束，关闭socket");
             afterConnectionClosed(session, CloseStatus.NORMAL);
+        }
     }
 
     /**
@@ -82,8 +85,10 @@ public class HttpAuthHandler extends TextWebSocketHandler {
         }
         String sendMessage = MessageUtil.sendMessage(
                 user.getId(),
-                (user.getIsIdent() == 2 ? consult.getConsumerId() : consult.getLawyerId()),
-                MessageUtil.msgParamJson2MsgParam(message.getPayload()));
+                (user.getIdIdent() == 2 ? consult.getConsumerId() : consult.getLawyerId()),
+                consult.getId(),
+                MessageUtil.msgParamJson2MsgParam(message.getPayload())
+                );
         String sessionCode = ConsultUtil.getSessionCode(consult, user, false);
         WebSocketSession webSocketSession = WsSessionManager.get(sessionCode);
         if(webSocketSession != null)
@@ -97,6 +102,7 @@ public class HttpAuthHandler extends TextWebSocketHandler {
      */
     @Override
     public void afterConnectionClosed(@NotNull WebSocketSession session, @NotNull CloseStatus status) {
+        log.info("开始关闭socket，原因为：" + status.toString());
         Map<String, Object> attributes = session.getAttributes();
         Object consultObj = attributes.get(AttributesKeys.CONSULT.getName());
         Object userObj = attributes.get(AttributesKeys.USER.getName());

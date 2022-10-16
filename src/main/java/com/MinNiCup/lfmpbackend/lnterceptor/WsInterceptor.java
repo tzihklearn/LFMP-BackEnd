@@ -1,5 +1,6 @@
 package com.MinNiCup.lfmpbackend.lnterceptor;
 
+import cn.hutool.http.HttpUtil;
 import com.MinNiCup.lfmpbackend.mapper.UserMapper;
 import com.MinNiCup.lfmpbackend.pojo.domain.Consult;
 import com.MinNiCup.lfmpbackend.pojo.dto.CommonResult;
@@ -23,11 +24,9 @@ import org.springframework.web.socket.server.HandshakeInterceptor;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.Objects;
 
 @Component
 @Slf4j
@@ -52,12 +51,14 @@ public class WsInterceptor implements HandshakeInterceptor {
      */
     @Override
     public boolean beforeHandshake(@NotNull ServerHttpRequest request, @NotNull ServerHttpResponse response, @NotNull WebSocketHandler wsHandler, @NotNull Map<String, Object> attributes) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        WsConnectParam param = null;
+        Map<String, String> params = HttpUtil.decodeParamMap(request.getURI().getQuery(), StandardCharsets.UTF_8);
+        WsConnectParam param = new WsConnectParam();
         try {
-            param = objectMapper.readValue(
-                    Objects.requireNonNull(request.getHeaders().get("Sec-WebSocket-Protocol")).get(0),
-                    WsConnectParam.class);
+            log.debug(request.toString());
+            log.debug(params.toString());
+            param.setToken(params.get("token"));
+            param.setConsultId(Integer.valueOf(params.get("consultId")));
+            System.out.println("param = " + param);
         } catch (Exception e){
             log.warn(e.getMessage());
             log.warn(Arrays.toString(e.getStackTrace()));
@@ -89,7 +90,7 @@ public class WsInterceptor implements HandshakeInterceptor {
                                 attributes.put(AttributesKeys.CONSULT.getName(), consult);
                                 log.info("将登录用户放到attributes中");
                                 attributes.put(AttributesKeys.USER.getName(), user);
-                                log.info("校验通过");
+                                log.info("校验通过，websocket握手结束");
                                 return true;
                             }
                             else {
