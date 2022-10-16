@@ -2,15 +2,13 @@ package com.MinNiCup.lfmpbackend.pojo.dto.result;
 
 import lombok.Data;
 
-import java.util.List;
-
 /**
  * @author tzih
- * @date 2022.10.14
+ * @date 2022.10.16
  */
 @Data
-public class CaseListResult {
+public class CommitConsultResult {
 
-    List<CaseResult> caseList;
+    Integer consultId;
 
 }

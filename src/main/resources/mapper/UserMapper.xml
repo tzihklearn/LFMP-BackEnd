@@ -6,7 +6,7 @@
         <id column="id" jdbcType="INTEGER" property="id"/>
         <id column="account" jdbcType="VARCHAR" property="account"/>
         <id column="password" jdbcType="VARCHAR" property="password"/>
-        <id column="is_ident" jdbcType="INTEGER" property="idIdent"/>
+        <id column="is_ident" jdbcType="INTEGER" property="isIdent"/>
     </resultMap>
 
     <insert id="insertUser">

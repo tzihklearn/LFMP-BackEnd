@@ -31,7 +31,7 @@ public class ConsultUtil {
         Consult consult = consultUtil.consultMapper.selectByConsultId(param.getConsultId());
         if (consult == null)
             return consult;
-        if (!Objects.equals(consult.getConsumerId(), user.getIdIdent() == 2 ? consult.getLawyerId() : consult.getConsumerId()))
+        if (!Objects.equals(consult.getConsumerId(), user.getIsIdent() == 2 ? consult.getLawyerId() : consult.getConsumerId()))
             consult.setId(0);
         return consult;
     }
@@ -39,12 +39,12 @@ public class ConsultUtil {
 
     public static String getSessionCode(Consult consult, User user, Boolean isMe){
         if (isMe) {
-            if (user.getIdIdent() == 2)
+            if (user.getIsIdent() == 2)
                 return "B" + user.getId() + LAWYERP + consult.getId();
             else
                 return "C" + consult.getId() + USERP + user.getId();
         } else {
-            if (user.getIdIdent() == 2)
+            if (user.getIsIdent() == 2)
                 return "C" + consult.getId() + USERP + consult.getConsumerId();
             else
                 return "B" + consult.getLawyerId() + LAWYERP + consult.getId();

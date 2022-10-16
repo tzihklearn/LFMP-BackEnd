@@ -6,5 +6,5 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface FieldMapper extends BaseMapper<Field> {
-
+    Integer selectIdByFieldFirst(String fieldFirst);
 }

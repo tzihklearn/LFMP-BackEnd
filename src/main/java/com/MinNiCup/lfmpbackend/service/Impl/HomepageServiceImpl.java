@@ -14,6 +14,7 @@ import com.MinNiCup.lfmpbackend.pojo.dto.param.CaseSearchParam;
 import com.MinNiCup.lfmpbackend.pojo.dto.result.*;
 import com.MinNiCup.lfmpbackend.service.HomepageService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,6 +28,7 @@ import java.util.Map;
  * @date 2022.10.13
  */
 @Service
+@Slf4j
 public class HomepageServiceImpl implements HomepageService {
 
     @Resource
@@ -85,12 +87,27 @@ public class HomepageServiceImpl implements HomepageService {
     @Override
     public CommonResult<LawyerDetailsResult> lawyerDetails(Integer lawyerId) {
 
-        UserInfo userInfo = userInfoMapper.selectById(lawyerId);
+        UserInfo userInfo = userInfoMapper.selectOne(
+                new QueryWrapper<UserInfo>().eq("user_id", lawyerId).eq("is_lawyer", 1));
 
-        Field fieldFirst = fieldMapper.selectOne(new QueryWrapper<Field>().select("field_first").eq("id", userInfo.getRealmId()));
+        if (userInfo == null) {
+            return CommonResult.fail("律师不存在");
+        }
+
+        Field fieldFirst = fieldMapper.selectOne(
+                new QueryWrapper<Field>().select("field_first").eq("id", userInfo.getRealmId()));
+        if (fieldFirst == null) {
+            log.warn("user_info表realm_id数据异常：" + userInfo.getUserId());
+            return CommonResult.fail("查询错误");
+        }
 
         Field fieldSecond = fieldMapper.selectOne(
                 new QueryWrapper<Field>().select("field_first").eq("id", userInfo.getViceRealmId()));
+
+        if (fieldSecond == null) {
+            log.warn("user_info表vice_realm_id数据异常：" + userInfo.getUserId());
+            return CommonResult.fail("查询错误");
+        }
 
         LawyerDetailsResult result = new LawyerDetailsResult();
 
@@ -115,7 +132,6 @@ public class HomepageServiceImpl implements HomepageService {
         List<CaseResult> caseList = new ArrayList<>();
 
         result.setCaseList(caseList);
-        result.setPage(caseParam.getPage() + 5);
 
         Map<String, Object> map = new HashMap<>();
 
@@ -139,8 +155,7 @@ public class HomepageServiceImpl implements HomepageService {
             }
         }
 
-        List<Example> examples = exampleMapper.selectList(new QueryWrapper<Example>().allEq(map)
-                .last("limit " + caseParam.getPage() + "," + 5));
+        List<Example> examples = exampleMapper.selectList(new QueryWrapper<Example>().allEq(map));
 
 
         for (Example aExample : examples) {
@@ -160,18 +175,15 @@ public class HomepageServiceImpl implements HomepageService {
         List<CaseResult> caseList = new ArrayList<>();
 
         result.setCaseList(caseList);
-        result.setPage(caseSearchParam.getPage() + 5);
 
         List<Example> examples = exampleMapper.selectList(new QueryWrapper<Example>()
-                .and(i -> i.like("title", caseSearchParam.getKeyword()).or().like("guid", caseSearchParam.getKeyword()))
-                .last("limit " + caseSearchParam.getPage() + "," + 5));
+                .and(i -> i.like("title", caseSearchParam.getKeyword()).or().like("guid", caseSearchParam.getKeyword())));
 
         for (Example aExample : examples) {
             caseList.add(new CaseResult(aExample.getId(), aExample.getTitle(), aExample.getGuid(), aExample.getCoverUrl()));
         }
 
         result.setCaseList(caseList);
-        result.setPage(caseSearchParam.getPage() + 5);
 
         return CommonResult.success(result);
 

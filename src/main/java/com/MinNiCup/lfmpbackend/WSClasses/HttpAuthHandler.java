@@ -82,7 +82,7 @@ public class HttpAuthHandler extends TextWebSocketHandler {
         }
         String sendMessage = MessageUtil.sendMessage(
                 user.getId(),
-                (user.getIdIdent() == 2 ? consult.getConsumerId() : consult.getLawyerId()),
+                (user.getIsIdent() == 2 ? consult.getConsumerId() : consult.getLawyerId()),
                 MessageUtil.msgParamJson2MsgParam(message.getPayload()));
         String sessionCode = ConsultUtil.getSessionCode(consult, user, false);
         WebSocketSession webSocketSession = WsSessionManager.get(sessionCode);

@@ -4,11 +4,13 @@ import lombok.Data;
 
 /**
  * @author tzih
- * @date 2022.10.14
+ * @date 2022.10.15
  */
 @Data
-public class CaseSearchParam {
+public class SetPhoneConsultParam {
 
-    String keyword;
+    Integer consultId;
+
+    Integer isReply;
 
 }

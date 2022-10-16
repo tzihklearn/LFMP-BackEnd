@@ -1,7 +1,7 @@
 package com.MinNiCup.lfmpbackend.lnterceptor;
 
 import com.MinNiCup.lfmpbackend.mapper.UserMapper;
-import com.MinNiCup.lfmpbackend.pojo.dto.CommonResult;
+import com.MinNiCup.lfmpbackend.pojo.CommonResult;
 import com.MinNiCup.lfmpbackend.pojo.domain.User;
 import com.MinNiCup.lfmpbackend.utils.JwtUtil;
 import com.MinNiCup.lfmpbackend.utils.RedisUtils.RedisUtil;
@@ -65,7 +65,7 @@ public class MyHanlderInterceptor implements HandlerInterceptor {
                         String url = request.getRequestURI();
 
                         if (url.matches("/consumer/(.*)")) {
-                            if (user.getIdIdent() != 0) {
+                            if (user.getIsIdent() != 0) {
                                 log.info("不是用户");
                                 setResponse(response);
                                 return false;
@@ -73,7 +73,7 @@ public class MyHanlderInterceptor implements HandlerInterceptor {
                         }
 
                         if (url.matches("/lawyer/(.*)")) {
-                            if (user.getIdIdent() != 2) {
+                            if (user.getIsIdent() != 2) {
                                 log.info("不是律师");
                                 setResponse(response);
                                 return false;
@@ -86,7 +86,7 @@ public class MyHanlderInterceptor implements HandlerInterceptor {
 
                         currentUser.setId(user.getId());
                         currentUser.setAccount(user.getAccount());
-                        currentUser.setIdIdent(user.getIdIdent());
+                        currentUser.setIdIdent(user.getIsIdent());
 
                         CurrentUserUtil.setCurrentUser(currentUser);
 
@@ -121,7 +121,7 @@ public class MyHanlderInterceptor implements HandlerInterceptor {
 
     private void setResponse(HttpServletResponse response) {
 
-        CommonResult<String> objectCommonResult = CommonResult.userAuthError();
+        CommonResult<String> objectCommonResult = CommonResult.token_error();
         try {
             //将 map装换为json ResponseBody底层使用jackson
             String json = new ObjectMapper().writeValueAsString(objectCommonResult);
