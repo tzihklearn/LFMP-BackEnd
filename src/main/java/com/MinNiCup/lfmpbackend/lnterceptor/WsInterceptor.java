@@ -55,7 +55,7 @@ public class WsInterceptor implements HandshakeInterceptor {
 
         String token = null;
         try {
-            token = Objects.requireNonNull(request.getHeaders().get("Authorization")).get(0);
+            token = Objects.requireNonNull(request.getHeaders().get("Sec-WebSocket-Protocol")).get(0);
         } catch (NullPointerException e){
 //            log.info(e.getMessage());
         }
@@ -82,13 +82,13 @@ public class WsInterceptor implements HandshakeInterceptor {
                         ObjectMapper objectMapper = new ObjectMapper();
                         WsConnectParam param = null;
                         try {
-                            param = objectMapper.readValue(body, WsConnectParam.class);
-                            body.close();
+                            param = new WsConnectParam();
+                            param.setConsultId(Integer.valueOf(Objects.requireNonNull(request.getHeaders().get("Sec-WebSocket-Protocol")).get(1)));
                         } catch (Exception e){
                             log.warn(e.getMessage());
                             log.warn(Arrays.toString(e.getStackTrace()));
                         }
-                        if (param != null){
+                        if (param != null && param.getConsultId() != null){
                             Consult consult = ConsultUtil.checkUserAndConsult(param, user);
                             if (consult.getId() != 0){
                                 if (consult.getIsReply() == 2)
@@ -160,7 +160,7 @@ public class WsInterceptor implements HandshakeInterceptor {
      * @param exception an exception raised during the handshake, or {@code null} if none
      */
     @Override
-    public void afterHandshake(@NotNull ServerHttpRequest request, @NotNull ServerHttpResponse response, WebSocketHandler wsHandler, Exception exception) {
+    public void afterHandshake(@NotNull ServerHttpRequest request, @NotNull ServerHttpResponse response, @NotNull WebSocketHandler wsHandler, Exception exception) {
 
     }
 }
