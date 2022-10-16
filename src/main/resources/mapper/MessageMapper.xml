@@ -11,8 +11,8 @@
     </resultMap>
 
     <insert id="insertMessage">
-        INSERT INTO message( `from`, `to`, date, type, message, consult_id)
-        VALUES( #{from}, #{to}, #{date}, #{type}, #{message}, #{consultId})
+        INSERT INTO message( `from`, `to`, date, message, consult_id)
+        VALUES( #{from}, #{to}, #{date}, #{message}, #{consultId})
     </insert>
 
     <select id="selectMessageByConsultId" resultMap="BaseResultMap">
